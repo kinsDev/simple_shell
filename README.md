@@ -1,4 +1,4 @@
-# Hey guys, welcome to the kkshell(kaimenyi & kinyanjui).
+# Hey guys, welcome to the kkshell (kaimenyi & kinyanjui).
 - Below are some guides that ALX shared with us on what to know to create our shell.
 
 # Everything you need to know to start coding your own shell
