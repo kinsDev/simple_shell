@@ -3,7 +3,7 @@
 int main(int ac, char **argv)
 {
 	char *prompt = "kkshell :) ";
-	char *lineptr;
+	char *lineptr = NULL;
 	size_t n = 0;
 	ssize_t line_read;
 
@@ -24,8 +24,8 @@ int main(int ac, char **argv)
 			return -1;
 		}
                 printf("%s\n", lineptr);
-
-		free(lineptr);
 	}
+	free(lineptr);
+
 	return 0;
 }
