@@ -4,7 +4,8 @@ int main(int ac, char **argv)
 {
 	char *prompt = "kkshell :) ";
 	char *lineptr;
-	size_t n = k0;
+	size_t n = 0;
+	ssize_t line_read;
 
 	(void)ac;
 	(void)argv;
@@ -14,7 +15,13 @@ int main(int ac, char **argv)
 	while(1)
 	{	
 		printf("%s", prompt);
-	       	getline(&lineptr, &n, stdin);
+	        line_read = getline(&lineptr, &n, stdin);
+
+		/* check if getline() reached EOF or user CTRL +D */
+		if(line_read == -1)
+		{
+			return -1;
+		}
                 printf("%s\n", lineptr);
 
 		free(lineptr);
