@@ -20,6 +20,7 @@ int main(int ac, char **argv)
 		/* check if getline() reached EOF or user CTRL +D */
 		if(line_read == -1)
 		{
+			printf("\n"); // print new line before exiting the shell
 			return -1;
 		}
                 printf("%s\n", lineptr);
