@@ -4,7 +4,7 @@ int main(int ac, char **argv)
 {
 	char *prompt = "kkshell :) ";
 	char *lineptr;
-	size_t n = 0l
+	size_t n = 0;
 
 	(void)ac;
 	(void)argv;
