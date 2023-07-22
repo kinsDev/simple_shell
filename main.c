@@ -26,7 +26,6 @@ int main(int ac, char **argv)
 			printf("\n"); /* print new line before exiting the shell */
 			return -1;
 		}
-	}
 
 	/* dyhamically allocating space */
 	lineptr_cpy = malloc(sizeof(char) * line_read);
@@ -62,9 +61,14 @@ int main(int ac, char **argv)
 	}
 	argv[i] = NULL;
 
-	printf("%s\n", lineptr);
+	/* command execution */
+	execmd(argv);
+
+	}
+
 	/* freeing up memeory that was previously allocated */
 	free(lineptr);
+	free(lineptr_cpy);
 
 	return 0;
 }
