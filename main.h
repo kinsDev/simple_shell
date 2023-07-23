@@ -8,5 +8,6 @@
 
 /* declaring the execmd function that takes in the execve in the execute file */
 void execmd(char **argv);
+char *get_location(char *command);
 
 #endif
