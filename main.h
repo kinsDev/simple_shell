@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 /* declaring the execmd function that takes in the execve in the execute file */
 void execmd(char **argv);
