@@ -12,4 +12,8 @@
 void execmd(char **argv);
 char *get_location(char *command);
 
+/* Function prototypes for get_line.c */
+void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t j);
+ssize_t get_input_line(char **lineptr, size_t *n, FILE *stream);
+
 #endif
