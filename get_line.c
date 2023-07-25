@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "main.h" // Include the header file where BUFSIZE and any custom functions are defined
+#include "main.h" 
 
 /**
  * assign_lineptr - assigns the line var for get_input_line
@@ -14,7 +14,7 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t j)
 {
     if (*lineptr == NULL)
     {
-        if (j > BUFSIZ) // Change BUFSIZE to BUFSIZ
+        if (j > BUFSIZ)
             *n = j;
         else
             *n = BUFSIZ;
@@ -22,7 +22,7 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t j)
     }
     else if (*n < j)
     {
-        if (j > BUFSIZ) // Change BUFSIZE to BUFSIZ
+        if (j > BUFSIZ)
             *n = j;
         else
             *n = BUFSIZ;
@@ -30,7 +30,7 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t j)
     }
     else
     {
-        strcpy(*lineptr, buffer); // Use strcpy instead of _strcpy
+        strcpy(*lineptr, buffer);
         free(buffer);
     }
 }
@@ -56,7 +56,7 @@ ssize_t get_input_line(char **lineptr, size_t *n, FILE *stream)
         return (-1);
     input = 0;
 
-    buffer = malloc(sizeof(char) * BUFSIZ); // Change BUFSIZE to BUFSIZ
+    buffer = malloc(sizeof(char) * BUFSIZ);
     if (buffer == NULL)
         return (-1);
     while (t != '\n')
@@ -72,8 +72,8 @@ ssize_t get_input_line(char **lineptr, size_t *n, FILE *stream)
             input++;
             break;
         }
-        if (input >= BUFSIZ) // Change BUFSIZE to BUFSIZ
-            buffer = realloc(buffer, input + 1); // Use realloc instead of _realloc
+        if (input >= BUFSIZ)
+            buffer = realloc(buffer, input + 1);
         buffer[input] = t;
         input++;
     }
