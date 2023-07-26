@@ -50,7 +50,6 @@ char *get_reversed_string(char *str)
 	{
 		return (NULL);
 	}
-	
 	/* Reverse the string */
 	if (str)
 	{
