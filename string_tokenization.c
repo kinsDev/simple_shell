@@ -1,34 +1,32 @@
 #include <stdlib.h>
 #include "kkshell.h"
 #include "main.h"
-
 /**
- * is_delimiter - Check if a character is one of the delimiters.
- * @c: Character to check.
- * @delimiters: Delimiter characters.
+ * isDelim - check if a character is one of the delimiters
+ * @c: character
+ * @delim: delimeters
  *
- * Return: 1 if it is a delimiter, 0 otherwise.
+ * Return: 1 if it is a delimiter, 0 otherwise
  */
-int is_delimiter(char c, char *delimiters)
+int isDelim(char c, char *delim)
 {
-	while (*delimiters)
+	while (*delim)
 	{
-		if (c == *delimiters)
-			return 1;
-		delimiters++;
+		if (c == *delim)
+			return (1);
+		delim++;
 	}
-	return 0;
+	return (0);
 }
-
 /**
- * _strtok - A function similar to strtok_r.
- * @str: String to be tokenized.
- * @delimiters: Delimiters used for tokenization.
- * @savePtr: State to keep track of the current position in the string.
+ * _strtok - strtok_r
+ * @str: string to be passed
+ * @delim: delimiters for tokens
+ * @savePtr: state
  *
- * Return: Next token found in the string, NULL if not found.
+ * Return: next token found in string, NULL if not found
  */
-char *_strtok(char *str, char *delimiters, char **savePtr)
+char *_strtok(char *str, char *delim, char **savePtr)
 {
 	char *ptr, *modifier, *end;
 	int quoteFound = 0;
@@ -40,12 +38,12 @@ char *_strtok(char *str, char *delimiters, char **savePtr)
 	end = ptr;
 	while (*end)
 		end++;
-	while (*ptr && is_delimiter(*ptr, delimiters))
+	while (*ptr && isDelim(*ptr, delim))
 		ptr++;
 	modifier = ptr;
 	if (*ptr == '\0')
 	{
-		return NULL;
+		return (NULL);
 	}
 	if (*ptr == '\'')
 	{
@@ -53,18 +51,18 @@ char *_strtok(char *str, char *delimiters, char **savePtr)
 		modifier = _strchr(ptr, '\'');
 		if (!modifier)
 		{
-			_printf("No matching quote found!\n");
+			_printf("no matching quote found!\n");
 			exit(-1);
 		}
 		*modifier = '\0';
 		*savePtr = modifier + 1;
-		return _strdup(ptr);
+		return (_strdup(ptr));
 	}
 	while (*modifier)
 	{
 		if (*modifier == '\'')
 			quoteFound = 1;
-		if (is_delimiter(*modifier, delimiters) && quoteFound == 0)
+		if (isDelim(*modifier, delim) && quoteFound == 0)
 			break;
 		modifier++;
 	}
@@ -73,6 +71,6 @@ char *_strtok(char *str, char *delimiters, char **savePtr)
 	else
 		*savePtr = modifier + 1;
 	*modifier = '\0';
-	return _strdup(ptr);
+	return (_strdup(ptr));
 }
 
