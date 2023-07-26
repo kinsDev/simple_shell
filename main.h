@@ -1,64 +1,141 @@
-#ifndef MY_SHELL_H
-#define MY_SHELL_H
+#ifndef _MAIN_H_
+#define _MAIN_H_
 
-#include <stdio.h>
-#include "lists.h"
+#define NULL_PTR -1
+#define WRONG_SPECIFIER -2
 
 /**
- * MAIN_H - all our header files are stored here
+ * get_char - Allocates memory for a single character and the null terminator.
+ * @c: The character to store in the allocated memory.
  *
- * Custom data structure to hold all shell variables needed
+ * Return: Pointer to the allocated memory, NULL if error.
  */
-typedef struct param_s
-{
-    char **argv;               /* Command line argument from main function */
-    char *buffer;              /* Input buffer */
-    char **args;               /* Array of arguments */
-    char *nextCommand;         /* The next command to process */
-    unsigned int argsCap;      /* Number of arguments the args array can hold */
-    unsigned int lineCount;    /* Total line of input */
-    unsigned int tokCount;     /* Number of tokens in a line input */
-    int status;                /* Return status of the run command */
-    list_t *env_head;          /* Singly linked list of environment vars */
-    list_t *alias_head;        /* Singly linked list of aliases */
-} param_t;
+char *get_char(char c);
 
-/* Custom data structure for built-in commands */
-typedef struct op
-{
-    char *name;                /* Built-in name */
-    void (*func)(param_t *);   /* Pointer to built-in function */
-} op_t;
+/**
+ * get_string - Allocates memory for a string and the null terminator.
+ * @s: The string to store in the allocated memory.
+ *
+ * Return: Pointer to the allocated memory, NULL if error.
+ */
+char *get_string(char *s);
 
-/* Function prototypes */
-int process_string(param_t *params);
-char *_strdup(char *str);
-char *_strcpy(char *dest, const char *src);
-int _getline(param_t *params);
+/**
+ * get_number - Allocates memory for an integer as a string.
+ * @n: The integer to store in the allocated memory.
+ *
+ * Return: Pointer to the allocated memory, NULL if error.
+ */
+char *get_number(int n);
+
+/**
+ * get_arg - Allocates memory for a variable argument list.
+ * @type: The type of the parameter to store in the allocated memory.
+ * @...: Variable argument list.
+ *
+ * Return: Pointer to the allocated memory, NULL if error.
+ */
+char *get_arg(char type, ...);
+
+/**
+ * get_binary - Converts an unsigned integer to its binary representation.
+ * @n: The integer to convert.
+ *
+ * Return: Pointer to the binary representation as a string.
+ */
+char *get_binary(unsigned int n);
+
+/**
+ * get_rev - Reverses a string.
+ * @s: The string to reverse.
+ *
+ * Return: Pointer to the reversed string.
+ */
+char *get_rev(char *s);
+
+/**
+ * get_rot13 - Applies the ROT13 cipher to a string.
+ * @s: The string to apply ROT13 to.
+ *
+ * Return: Pointer to the ROT13 ciphered string.
+ */
+char *get_rot13(char *s);
+
+/**
+ * str_concat - Concatenates two strings.
+ * @s1: The first string.
+ * @s2: The second string.
+ *
+ * Return: Pointer to the concatenated string.
+ */
+char *str_concat(char *s1, char *s2);
+
+/**
+ * string_nconcat - Concatenates two strings up to n bytes.
+ * @s1: The first string.
+ * @s2: The second string.
+ * @n: The number of bytes to concatenate from s2.
+ *
+ * Return: Pointer to the concatenated string.
+ */
+char *string_nconcat(char *s1, char *s2, unsigned int n);
+
+/**
+ * _strlen - Computes the length of a string.
+ * @s: The input string.
+ *
+ * Return: The length of the string.
+ */
+int _strlen(char *s);
+
+/**
+ * _printf - Custom printf function that supports basic formatting.
+ * @format: The format string containing the text and format specifiers.
+ * @...: Variable argument list.
+ *
+ * Return: The number of characters printed (excluding the null byte),
+ *         or -1 if an error occurs.
+ */
+int _printf(const char *format, ...);
+
+/**
+ * _strchr - Locate the first occurrence of a character in a string.
+ * @s: The string to search.
+ * @c: The character to locate.
+ *
+ * Return: Pointer to the first occurrence of the character in the string,
+ *         or NULL if the character is not found.
+ */
+char *_strchr(char *s, char c);
+
+/**
+ * _atoi - Converts a string to an integer.
+ * @s: The input string.
+ *
+ * Return: The converted integer.
+ */
+int _atoi(char *s);
+
+/**
+ * _strcmp - Compares two strings.
+ * @s1: The first string.
+ * @s2: The second string.
+ *
+ * Return: 0 if the strings are equal, a positive value if s1 > s2,
+ *         and a negative value if s1 < s2.
+ */
 int _strcmp(char *s1, char *s2);
-int _strcmp_n(char *s1, char *s2, int n);
-char *_strtok(char *str, char *delim, char **savePtr);
-void run_command(param_t *params);
-void *_realloc(char **ptr, unsigned int old_size, unsigned int new_size);
-void _printenv(param_t *params);
-void sigint_handler(int sig);
-char *_getenv(char *name, param_t *params);
-void _setenv(param_t *params);
-void _unsetenv(param_t *params);
-char *get_file(param_t *params);
-void (*get_builtin(param_t *params))(param_t *);
-void _myExit(param_t *params);
-void _cd(param_t *params);
-void _alias(param_t *params);
-void set_alias(char *name, param_t *params);
-void make_alias(char *name, char *val, param_t *params);
-void print_alias(char *name, param_t *params);
-void print_all_aliases(param_t *params);
-void print_list_env(list_t *head);
-void print_list_alias(list_t *head);
-void free_params(param_t *params);
-void write_error(param_t *params, char *msg);
-void _clear(param_t *params);
 
-#endif /* MY_SHELL_H */
+/**
+ * _strcmp_n - Compares two strings up to a given number of characters.
+ * @s1: The first string.
+ * @s2: The second string.
+ * @n: The number of characters to compare.
+ *
+ * Return: 0 if the strings are equal up to the given number of characters,
+ *         a positive value if s1 > s2, and a negative value if s1 < s2.
+ */
+int _strcmp_n(char *s1, char *s2, int n);
+
+#endif /* _MAIN_H_ */
 
