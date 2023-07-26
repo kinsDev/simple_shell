@@ -1,3 +1,8 @@
+#include <string.h>
+#include <limits.h>
+#include "kkshell.h"
+#include "main.h"
+
 /**
  * _strcpy - Copies a string to another memory address.
  * @src: Pointer to the source string.
