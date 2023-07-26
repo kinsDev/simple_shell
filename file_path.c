@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "main.h"
-#include "shell.h"
+#include "kkshell.h"
 #include "lists.h"
 /**
  * get_file - get correct path to a command file
