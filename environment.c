@@ -32,3 +32,18 @@ char *_getenv(char *name, param_t *params)
     return (NULL);
 }
 
+/**
+ * _printenv - Prints the list of environment variables.
+ * @params: Pointer to the parameter structure containing the environment list.
+ *
+ * Return: None
+ *
+ * Description:
+ * This function prints the linked list of environment variables contained in the
+ * parameter structure.
+ */
+void _printenv(param_t *params)
+{
+    print_environment_list(params->env_head);
+}
+

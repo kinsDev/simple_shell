@@ -17,24 +17,24 @@
  */
 void (*get_builtin(param_t *params))(param_t *)
 {
-	builtin_op builtins[] = {
-		{"exit", my_exit},
-		{"clear", clear_screen},
-		{"env", print_env},
-		{"setenv", set_env},
-		{"cd", change_directory},
-		{"unsetenv", unset_env},
-		{"alias", handle_alias},
-		{NULL, NULL},
-	};
-	builtin_op *builtin = builtins;
+    builtin_op builtins[] = {
+        {"exit", my_exit},
+        {"clear", clear_screen},
+        {"env", print_env},
+        {"setenv", set_env},
+        {"cd", change_directory},
+        {"unsetenv", unset_env},
+        {"alias", handle_alias},
+        {NULL, NULL},
+    };
+    builtin_op *builtin = builtins;
 
-	while (builtin->name)
-	{
-		if (!_strcmp(params->args[0], builtin->name))
-			return (builtin->func);
-		builtin++;
-	}
-	return (NULL);
+    while (builtin->name)
+    {
+        if (!_strcmp(params->args[0], builtin->name))
+            return (builtin->func);
+        builtin++;
+    }
+    return (NULL);
 }
 

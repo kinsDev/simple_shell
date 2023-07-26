@@ -13,16 +13,16 @@
  */
 void _printenv(param_t *params)
 {
-	if (params->tokCount != 1)
-	{
-		_printf("env: %s: No such file or directory\n",
-			params->args[1]);
-		params->status = 2;
-		return;
-	}
+    if (params->tokCount != 1)
+    {
+        _printf("env: %s: No such file or directory\n",
+                params->args[1]);
+        params->status = 2;
+        return;
+    }
 
-	print_environment_list(params->env_head);
-	params->status = 0;
+    print_environment_list(params->env_head);
+    params->status = 0;
 }
 
 /**
@@ -36,11 +36,11 @@ void _printenv(param_t *params)
  */
 void print_environment_list(list_t *head)
 {
-	if (head)
-	{
-		print_environment_list(head->next);
-		if (head->str)
-			_printf("%s=%s\n", head->str, head->val);
-	}
+    if (head)
+    {
+        print_environment_list(head->next);
+        if (head->str)
+            _printf("%s=%s\n", head->str, head->val);
+    }
 }
 

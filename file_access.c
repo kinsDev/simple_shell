@@ -1,13 +1,10 @@
 #include <stdlib.h>
-#include "kkshell.h"
-
 /**
- * move_left - Removes leading zeros from a binary string.
- * @a: Buffer containing the binary string.
- * @size: Size of the buffer.
- * @num: Number of digits in the binary number.
- *
- * Return: Pointer to the modified buffer.
+ * move_left -removes leading 0's
+ * @a: buffer
+ * @size: size of array
+ * @num: number of digits in the binary number
+ * Return: buffer
  */
 char *move_left(char *a, int size, int num)
 {
@@ -21,11 +18,11 @@ char *move_left(char *a, int size, int num)
 }
 
 /**
- * get_binary - Converts an unsigned int to a binary string.
- * @n: Integer to be converted.
- *
- * Return: Pointer to the binary string.
+ * get_binary - converts an unsigned int to binary
+ * @n: integer
+ * Return: pointer to binary
  */
+
 char *get_binary(unsigned int n)
 {
 	char *ptr = NULL;
@@ -46,7 +43,9 @@ char *get_binary(unsigned int n)
 	if (ptr)
 	{
 		for (i = 0; i < size; i++)
+		{
 			ptr[i] = '0';
+		}
 		ptr[size - 1] = '\0';
 
 		i = size - 2;
@@ -63,11 +62,11 @@ char *get_binary(unsigned int n)
 	return (ptr);
 }
 
+
 /**
- * get_char - Returns a copy of a single character.
- * @c: The character to be copied.
- *
- * Return: Pointer to the copied character.
+ * get_char - returns a copied char
+ * @c: char to be copied
+ * Return: ptr of copied char
  */
 char *get_char(char c)
 {
@@ -75,18 +74,18 @@ char *get_char(char c)
 
 	ptr = malloc(2);
 	if (ptr == NULL)
+	{
 		return (NULL);
-
+	}
 	ptr[0] = c;
 	ptr[1] = '\0';
 	return (ptr);
 }
 
 /**
- * get_string - Returns a duplicated string.
- * @s: The string to be duplicated.
- *
- * Return: Pointer to the duplicated string or NULL if @s is NULL.
+ * get_string - returns a new duplicated string
+ * @s: string to be copied
+ * Return: Null if string is null, else pointer of copied string
  */
 char *get_string(char *s)
 {
@@ -98,7 +97,6 @@ char *get_string(char *s)
 		ptr = malloc(7);
 		if (ptr == NULL)
 			return (NULL);
-
 		ptr[0] = '(';
 		ptr[1] = 'n';
 		ptr[2] = 'u';
@@ -108,33 +106,34 @@ char *get_string(char *s)
 		ptr[6] = '\0';
 		return (ptr);
 	}
-
 	for (i = 0; s[i] != '\0'; i++)
+	{
 		;
-
+	}
 	ptr = (char *)malloc(i * sizeof(char) + 1);
 	if (ptr == NULL)
+	{
 		return (NULL);
-
+	}
 	for (j = 0; j < i; j++)
+	{
 		ptr[j] = s[j];
-
+	}
 	ptr[j] = '\0';
 	return (ptr);
 }
 
 /**
- * get_number - Converts an integer to a string and stores it in a memory block.
- * @n: Integer to be converted.
+ * get_number - put integer into a memory block as string
+ * @n: integer
  *
- * Return: Pointer to the string representation of the integer, or NULL on error.
+ * Return: pointer to integer string, NULL on error
  */
 char *get_number(int n)
 {
 	int i, len = 0, tmp;
 	char *buf = NULL;
-
-	/* Find the number of bytes to allocate */
+	/* find number bytes to allocate */
 	tmp = n;
 	while (tmp >= 10 || tmp <= -10)
 	{
@@ -144,15 +143,14 @@ char *get_number(int n)
 	len++;
 	if (n < 0)
 		len++;
-
 	buf = malloc(sizeof(char) * (len + 1));
 	if (buf)
 	{
 		buf[len] = '\0';
-
 		if (n < 0)
+		{
 			buf[0] = '-';
-
+		}
 		i = len - 1;
 		while (n >= 10 || n <= -10)
 		{
@@ -161,8 +159,8 @@ char *get_number(int n)
 			i--;
 			n /= 10;
 		}
-
 		tmp = (n % 10) >= 0 ? n % 10 : -(n % 10);
 		buf[i] = tmp + '0';
 	}
+	return (buf);
 }
