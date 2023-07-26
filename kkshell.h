@@ -3,39 +3,43 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include "lists.h"
+
 /**
- * struct param_s - structure used to hold all shell variables needed
- * @argv: command line argument from main function
- * @buffer: input buffer
- * @args: array of arguments
- * @nextCommand: the next command to process
- * @argsCap: num of arguments the args array can hold
- * @lineCount: total line of input
- * @tokCount: num of tokens in a line input
- * @status: run command return status
- * @env_head: singly linked list of environment vars
- * @alias_head: singly linked list of aliases
- * Description: This structures hold all variables that passed into
- * other functions.
+ *Description: This structures hold all variables that passed
+ *@lineCount: total line of input
+ *@args: array of arguments
+ *@tokCount: num of tokens in a line input
+ *@nextCommand: the next command to process
+ *@status: run command return status
+ *@argsCap: num of arguments the args array can hold
+ *struct param_s - structure used to hold all shell variables needed
+ *@env_head: singly linked list of environment vars
+ *@alias_head: singly linked list of aliases
+ *@buffer: input buffer
+ *
+ *@argv: command line argument from main function
+ *
  */
 typedef struct param_s
 {
+
+	list_t *alias_head;
 	char **argv;
+	list_t *env_head;
 	char *buffer;
 	char **args;
+	int status;
 	char *nextCommand;
+	unsigned int tokCount;
 	unsigned int argsCap;
 	unsigned int lineCount;
-	unsigned int tokCount;
-	int status;
-	list_t *env_head;
-	list_t *alias_head;
+	
 } param_t;
 
 /**
  * struct op - a buildin function
- * @name: buildin name
- * @func: pointer to buildin function
+ * @name: buildin
+ * @func: buildin function
  */
 typedef struct op
 {

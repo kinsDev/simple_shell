@@ -7,17 +7,17 @@
 #define BUFFER_SIZE 4096
 param_t *init_param(char **argv, char **env);
 /**
- * main - entry point for simple shell
+ * main - entry to the program
  * @argc: argument count
- * @argv: Null terminated argument list
- * @env: Null terminated environment variables list
+ * @argv: argument list
+ * @env:  environment variables list
  *
  * Return: 0 on success
  */
 int main(int __attribute__((unused)) argc, char **argv, char **env)
 {
 	param_t *params = NULL;
-	int cond = -2, status;
+	int condition = -2, status;
 	unsigned int i;
 	char *state = NULL;
 	size_t size = BUFFER_SIZE;
@@ -28,10 +28,10 @@ int main(int __attribute__((unused)) argc, char **argv, char **env)
 	signal(SIGINT, sigint_handler);
 	while (1)
 	{
-		if (cond == -1)
+		if (condition == -1)
 		{
 			status = params->status;
-			_printf("KKShell($) \n");
+			_printf("$ \n");
 			free_params(params);
 			return (status);
 		}
@@ -39,11 +39,11 @@ int main(int __attribute__((unused)) argc, char **argv, char **env)
 			(params->buffer)[i] = 0;
 		params->tokCount = 0;
 		if (isatty(STDIN_FILENO))
-			_printf("BenShell($): ");
-		/*cond = _getline(params);*/
-		cond = getline(&params->buffer, &size, stdin);
+			_printf("$: ");
+		/*condition = _getline(params);*/
+		condition = getline(&params->buffer, &size, stdin);
 		params->lineCount++;
-		if (cond == -1 && _strlen(params->buffer) == 0)
+		if (condition == -1 && _strlen(params->buffer) == 0)
 		{
 			status = params->status;
 			free_params(params);
