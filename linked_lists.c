@@ -66,3 +66,47 @@ list_t *add_node(list_t **head, char *str, char *val)
 
     return (new);
 }
+
+/**
+ * get_node - Searches for a node with a given key in the list.
+ * @head: Pointer to the start of the list.
+ * @str: Key to search for.
+ *
+ * Return: Pointer to the desired node if found, NULL otherwise.
+ */
+list_t *get_node(list_t *head, char *str)
+{
+    list_t *h;
+
+    if (!head)
+        return (NULL);
+
+    h = head;
+    while (h)
+    {
+        if (!_strcmp(h->str, str))
+            break;
+        h = h->next;
+    }
+
+    return (h);
+}
+
+/**
+ * free_list - Frees a linked list from memory.
+ * @head: Pointer to the head of the linked list.
+ */
+void free_list(list_t *head)
+{
+    list_t *ptr = head;
+
+    while (head)
+    {
+        ptr = head->next;
+        free(head->str);
+        free(head->val);
+        free(head);
+        head = ptr;
+    }
+}
+
