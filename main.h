@@ -1,8 +1,9 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#define NULL_PTR -1
-#define WRONG_SPECIFIER -2
+#define _GNU_SOURCE
+#include <stdio.h>
+#include "lists.h"
 
 /**
  * get_char - Allocates memory for a single character and the null terminator.
@@ -136,6 +137,12 @@ int _strcmp(char *s1, char *s2);
  *         a positive value if s1 > s2, and a negative value if s1 < s2.
  */
 int _strcmp_n(char *s1, char *s2, int n);
+
+/* Function prototypes */
+param_t *init_param(char **argv, char **env);
+void print_environment_list(list_t *head);
+void print_all_aliases(param_t *params);
+void free_alias_list(list_t *head);
 
 #endif /* _MAIN_H_ */
 
