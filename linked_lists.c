@@ -12,12 +12,12 @@
  */
 size_t list_len(list_t *h)
 {
-    size_t i;
+size_t i;
 
-    for (i = 0; h != NULL; i++)
-        h = h->next;
+for (i = 0; h != NULL; i++)
+	h = h->next;
 
-    return (i);
+return (i);
 }
 
 /**
@@ -28,17 +28,17 @@ size_t list_len(list_t *h)
  */
 size_t print_list(list_t *h)
 {
-    size_t count;
+size_t count;
 
-    for (count = 0; h != NULL; count++)
-    {
-        if (h->str == NULL)
-            break;
-        _printf("%s\n", h->str);
-        h = h->next;
-    }
+for (count = 0; h != NULL; count++)
+{
+if (h->str == NULL)
+	break;
+_printf("%s\n", h->str);
+h = h->next;
+}
 
-    return (count);
+return (count);
 }
 
 /**
@@ -51,20 +51,20 @@ size_t print_list(list_t *h)
  */
 list_t *add_node(list_t **head, char *str, char *val)
 {
-    list_t *new;
+list_t *new;
 
-    new = malloc(sizeof(list_t));
-    if (new == NULL)
-        return (NULL);
+new = malloc(sizeof(list_t));
+if (new == NULL)
+return (NULL);
 
-    new->str = _strdup(str);
-    new->len = _strlen(new->str);
-    new->val = _strdup(val);
-    new->valLen = _strlen(val);
-    new->next = *head;
-    *head = new;
+new->str = _strdup(str);
+new->len = _strlen(new->str);
+new->val = _strdup(val);
+new->valLen = _strlen(val);
+new->next = *head;
+*head = new;
 
-    return (new);
+return (new);
 }
 
 /**
@@ -76,20 +76,19 @@ list_t *add_node(list_t **head, char *str, char *val)
  */
 list_t *get_node(list_t *head, char *str)
 {
-    list_t *h;
+list_t *h;
 
-    if (!head)
-        return (NULL);
+if (!head)
+	return (NULL);
 
-    h = head;
-    while (h)
-    {
-        if (!_strcmp(h->str, str))
-            break;
-        h = h->next;
-    }
-
-    return (h);
+h = head;
+while (h)
+{
+if (!_strcmp(h->str, str))
+	break;
+h = h->next;
+}
+return (h);
 }
 
 /**
@@ -98,15 +97,15 @@ list_t *get_node(list_t *head, char *str)
  */
 void free_list(list_t *head)
 {
-    list_t *ptr = head;
+list_t *ptr = head;
 
-    while (head)
-    {
-        ptr = head->next;
-        free(head->str);
-        free(head->val);
-        free(head);
-        head = ptr;
-    }
+while (head)
+{
+ptr = head->next;
+free(head->str);
+free(head->val);
+free(head);
+head = ptr;
+}
 }
 
