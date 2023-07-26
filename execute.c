@@ -5,7 +5,6 @@
 #include "kkshell.h"
 #include "lists.h"
 #include "main.h"
-
 /**
  * run_command - Execute a command by searching for it in the PATH
  * and executing it.
@@ -17,7 +16,6 @@ void run_command(param_t *params)
 	void (*builtin_cmd)(param_t *);
 	char *executable_file = NULL;
 	pid_t pid;
-
 	/* Check if the command is a built-in command */
 	builtin_cmd = get_builtin(params);
 	if (builtin_cmd)
@@ -55,4 +53,3 @@ void run_command(param_t *params)
 		free(executable_file);
 	}
 }
-
