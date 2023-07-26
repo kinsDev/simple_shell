@@ -31,7 +31,7 @@ int main(int __attribute__((unused)) argc, char **argv, char **env)
 		if (cond == -1)
 		{
 			status = params->status;
-			_printf("BenShell($) \n");
+			_printf("KKShell($) \n");
 			free_params(params);
 			return (status);
 		}
