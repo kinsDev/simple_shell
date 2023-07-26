@@ -1,87 +1,31 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include "main.h" 
+#include <stdlib.h>
+#include "kkshell.h"
+#include "main.h"
+
+#define BUFFER_SIZE 4096
+#define READ_SIZE 1024
 
 /**
- * assign_lineptr - assigns the line var for get_input_line
- * @lineptr: Buffer that stores the input str
- * @n: size of line
- * @buffer: str that is been called to line
- * @j: size of buffer
+ * rlLine - Reallocate the line buffer with a new size.
+ * @line: Pointer to the line buffer.
+ * @oldSize: Current size of the line buffer.
+ * @newSize: New size to reallocate.
+ *
+ * Return: Pointer to the reallocated buffer or NULL on failure.
  */
-void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t j)
+char *rlLine(char **line, unsigned int oldSize, unsigned int newSize)
 {
-    if (*lineptr == NULL)
-    {
-        if (j > BUFSIZ)
-            *n = j;
-        else
-            *n = BUFSIZ;
-        *lineptr = buffer;
-    }
-    else if (*n < j)
-    {
-        if (j > BUFSIZ)
-            *n = j;
-        else
-            *n = BUFSIZ;
-        *lineptr = buffer;
-    }
-    else
-    {
-        strcpy(*lineptr, buffer);
-        free(buffer);
-    }
+	char *newLine = NULL;
+	unsigned int i;
+
+	newLine = malloc(newSize);
+	if (newLine)
+	{
+		for (i = 0; i < oldSize; i++)
+			newLine[i] = (*line)[i];
+		free(*line);
+		*line = newLine;
+	}
+	return (newLine);
 }
-
-/**
- * get_input_line - Read input from stream
- * @lineptr: Buffer that stores the input
- * @n: size of lineptr
- * @stream: stream to read from
- * Return: The number of bytes
- */
-ssize_t get_input_line(char **lineptr, size_t *n, FILE *stream)
-{
-    int i;
-    static ssize_t input;
-    ssize_t retval;
-    char *buffer;
-    char t = 'z';
-
-    if (input == 0)
-        fflush(stream);
-    else
-        return (-1);
-    input = 0;
-
-    buffer = malloc(sizeof(char) * BUFSIZ);
-    if (buffer == NULL)
-        return (-1);
-    while (t != '\n')
-    {
-        i = read(STDIN_FILENO, &t, 1);
-        if (i == -1 || (i == 0 && input == 0))
-        {
-            free(buffer);
-            return (-1);
-        }
-        if (i == 0 && input != 0)
-        {
-            input++;
-            break;
-        }
-        if (input >= BUFSIZ)
-            buffer = realloc(buffer, input + 1);
-        buffer[input] = t;
-        input++;
-    }
-    buffer[input] = '\0';
-    assign_lineptr(lineptr, n, buffer, input);
-    retval = input;
-    if (i != 0)
-        input = 0;
-    return (retval);
-}
-
