@@ -1,20 +1,20 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <limits.h>
-#include "kkshell.h"
+#include "shell.h"
 #include "main.h"
-
 /**
- * _str_copy - Copies a string from source to destination.
- * @src: Pointer to the source string.
- * @dest: Pointer to the destination string.
+ * _strcpy - copies a string to anther memory adress
+ * @src: pointer to the source string
+ * @dest: pointer to the dest address
  *
- * Return: Pointer to the destination string.
+ * Return: pointer to the dest
  */
-char *_str_copy(char *dest, const char *src)
+char *_strcpy(char *dest, const char *src)
 {
-	int i = 0;
+	int i;
 
+	i = 0;
 	while (src[i] != '\0')
 	{
 		dest[i] = src[i];
@@ -22,19 +22,18 @@ char *_str_copy(char *dest, const char *src)
 	}
 	if (src[i] == '\n')
 		dest[i] = '\n';
-
 	return (dest);
 }
 
 /**
- * _str_compare - Compares two strings.
- * @s1: String 1.
- * @s2: String 2.
+ * _strcmp - compares two strings
+ * @s1: string 1
+ * @s2: string 2
  *
- * Return: An integer less than, equal to, or greater than 0 if s1 is,
- * respectively, less than, equal to, or greater than s2.
+ * Return: int less than, equal to, or greater than 0 if s1 is, respectively
+ * less than, equal to, or greater than s2
  */
-int _str_compare(char *s1, char *s2)
+int _strcmp(char *s1, char *s2)
 {
 	int res = 0;
 
@@ -50,15 +49,15 @@ int _str_compare(char *s1, char *s2)
 }
 
 /**
- * _str_compare_n - Compares n bytes of two strings.
- * @s1: String 1.
- * @s2: String 2.
- * @n: Number of bytes to compare.
+ * _strcmp_n - compares n bytes of two strings
+ * @s1: string 1
+ * @s2: string 2
+ * @n: number of bytes to comp
  *
- * Return: An integer less than, equal to, or greater than 0 if s1 is,
- * respectively, less than, equal to, or greater than s2.
+ * Return: int less than, equal to, or greater than 0 if s1 is, respectively
+ * less than, equal to, or greater than s2
  */
-int _str_compare_n(char *s1, char *s2, int n)
+int _strcmp_n(char *s1, char *s2, int n)
 {
 	int i = 0, res = *s1 - *s2;
 
@@ -73,29 +72,29 @@ int _str_compare_n(char *s1, char *s2, int n)
 	return (res);
 }
 
-/**
- * _str_to_int - Converts a string to an integer.
- * @s: String to evaluate.
- *
- * Return: The value of the first number in the string.
- */
-int _str_to_int(char *s)
-{
-	int num, tmp, len, mul = 1;
 
-	num = 0;
+/**
+ * _atoi - turn a str into an int
+ * @s: string to eval
+ * Return: n the value of the first number in the st0ring
+ */
+int _atoi(char *s)
+{
+	int n, tmp, len, mul = 1;
+
+	n = 0;
 	tmp = 0;
-	len = _str_length(s);
+
+	len = _strlen(s);
 	len--;
 	while (len >= 0)
 	{
-		tmp = num;
-		num = num + (s[len] - '0') * mul;
-		if (num < tmp || num > INT_MAX)
+		tmp = n;
+		n = n + (s[len] - '0') * mul;
+		if (n < tmp || n > INT_MAX)
 			return (-1);
 		len--;
 		mul *= 10;
 	}
-	return (num);
+	return (n);
 }
-
