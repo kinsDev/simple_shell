@@ -73,3 +73,4 @@ char *_strtok(char *str, char *delim, char **savePtr)
 	*modifier = '\0';
 	return (_strdup(ptr));
 }
+
