@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <limits.h>
-#include "shell.h"
+#include "kkshell.h"
 #include "main.h"
 /**
  * _strcpy - copies a string to anther memory adress
