@@ -1,76 +1,80 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include "lists.h"
+#define NULL_PTR -1
+#define WRONG_SPECIFIER -2
 
 /**
- * struct param_s - structure used to hold all shell variables needed
- * @argv: command line argument from main function
- * @buffer: input buffer
- * @args: array of arguments
- * @nextCommand: the next command to process
- * @argsCap: num of arguments the args array can hold
- * @lineCount: total line of input
- * @tokCount: num of tokens in a line input
- * @status: run command return status
- * @env_head: singly linked list of environment vars
- * @alias_head: singly linked list of aliases
- * Description: This structure holds all variables that are passed into
- * other functions.
- */
-typedef struct param_s
-{
-    char **argv;
-    char *buffer;
-    char **args;
-    char *nextCommand;
-    unsigned int argsCap;
-    unsigned int lineCount;
-    unsigned int tokCount;
-    int status;
-    list_t *env_head;
-    list_t *alias_head;
-} param_t;
-
-/**
- * struct op - a built-in function
- * @name: built-in name
- * @func: pointer to built-in function
- */
-typedef struct op
-{
-    char *name;
-    void (*func)(param_t *);
-} op_t;
-
-/**
- * init_param - Initializes the param_t structure and its members.
- * @argv: The command-line arguments.
- * @env: The environment variables.
+ * get_char - put a character into a memory block allocated using malloc
+ * The allocated memory should has two bytes: the character, and the
+ * terminating null byte.
  *
- * Return: A pointer to the initialized param_t structure.
+ * @c: character
+ *
+ * Return: pointer to that memory block, NULL if error
  */
-param_t *init_param(char **argv, char **env);
+char *get_char(char c);
 
 /**
- * print_environment_list - Prints the environment variables.
- * @head: Pointer to the head of the environment variables list.
+ * get_string - put a string into a memory block allocated using malloc
+ * @s: string
+ *
+ * Return: pointer to that memory block, NULL if error
  */
-void print_environment_list(list_t *head);
+char *get_string(char *s);
 
 /**
- * print_all_aliases - Prints all aliases.
- * @params: Pointer to the param_t structure.
+ * put_number - put an integer into a block of memory
+ * @n: integer
+ *
+ * Return: pointer to that memory block, NULL if error
  */
-void print_all_aliases(param_t *params);
+char *get_number(int n);
 
 /**
- * free_alias_list - Frees the memory allocated for the alias list.
- * @head: Pointer to the head of the alias list.
+ * print_arg - put one passed in parameter into a block of memory
+ * @type: type of the parameter
+ *
+ * Return: pointer to the memory block, NULL if error
  */
-void free_alias_list(list_t *head);
+char *get_arg(char type, ...);
 
-#endif /* _MAIN_H_ */
+/**
+ * get_binary - converts an unsigned int to binary
+ * @n: integer
+ *
+ * Return: pointer to binary
+ */
+char *get_binary(unsigned int n);
 
+/**
+ * get_rev - reverse a string
+ * @s: string
+ * Return: string reversed
+ */
+char *get_rev(char *s);
+
+/**
+ * get_rot13 - rot13 as a string
+ * @s: string
+ * Return: rot13
+ */
+char *get_rot13(char *s);
+
+char *str_concat(char *, char *);
+
+char *string_nconcat(char *, char *, unsigned int);
+
+int _strlen(char *);
+
+int _printf(const char *, ...);
+
+char *_strchr(char *s, char c);
+
+int _atoi(char *s);
+
+int _strcmp(char *, char *);
+
+int _strcmp_n(char *, char *, int n);
+
+
+#endif

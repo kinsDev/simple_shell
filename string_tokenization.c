@@ -1,15 +1,14 @@
 #include <stdlib.h>
 #include "kkshell.h"
 #include "main.h"
-
 /**
- * is_delimiter - Check if a character is one of the delimiters.
- * @c: Character to check.
- * @delim: Delimiters.
+ * isDelim - check if a character is one of the delimiters
+ * @c: character
+ * @delim: delimeters
  *
- * Return: 1 if it is a delimiter, 0 otherwise.
+ * Return: 1 if it is a delimiter, 0 otherwise
  */
-int is_delimiter(char c, char *delim)
+int isDelim(char c, char *delim)
 {
 	while (*delim)
 	{
@@ -19,70 +18,58 @@ int is_delimiter(char c, char *delim)
 	}
 	return (0);
 }
-
 /**
- * _strtok - Custom implementation of strtok_r.
- * @str: String to be parsed.
- * @delim: Delimiters for tokens.
- * @save_ptr: State to store the current position in the string.
+ * _strtok - strtok_r
+ * @str: string to be passed
+ * @delim: delimiters for tokens
+ * @savePtr: state
  *
- * Return: Next token found in the string, NULL if not found.
+ * Return: next token found in string, NULL if not found
  */
-char *_strtok(char *str, char *delim, char **save_ptr)
+char *_strtok(char *str, char *delim, char **savePtr)
 {
 	char *ptr, *modifier, *end;
-	int quote_found = 0;
+	int quoteFound = 0;
 
-	if (*save_ptr)
-		ptr = *save_ptr;
+	if (*savePtr)
+		ptr = *savePtr;
 	else
 		ptr = str;
-
 	end = ptr;
 	while (*end)
 		end++;
-
-	while (*ptr && is_delimiter(*ptr, delim))
+	while (*ptr && isDelim(*ptr, delim))
 		ptr++;
-
 	modifier = ptr;
-
 	if (*ptr == '\0')
 	{
 		return (NULL);
 	}
-
 	if (*ptr == '\'')
 	{
 		ptr++;
 		modifier = _strchr(ptr, '\'');
 		if (!modifier)
 		{
-			_printf("No matching quote found!\n");
+			_printf("no matching quote found!\n");
 			exit(-1);
 		}
 		*modifier = '\0';
-		*save_ptr = modifier + 1;
+		*savePtr = modifier + 1;
 		return (_strdup(ptr));
 	}
-
 	while (*modifier)
 	{
 		if (*modifier == '\'')
-			quote_found = 1;
-
-		if (is_delimiter(*modifier, delim) && quote_found == 0)
+			quoteFound = 1;
+		if (isDelim(*modifier, delim) && quoteFound == 0)
 			break;
-
 		modifier++;
 	}
-
 	if (*modifier == '\0')
-		*save_ptr = modifier;
+		*savePtr = modifier;
 	else
-		*save_ptr = modifier + 1;
-
+		*savePtr = modifier + 1;
 	*modifier = '\0';
 	return (_strdup(ptr));
 }
-
