@@ -1,17 +1,47 @@
 #include <stdlib.h>
-#include "kkshell.h"
 #include "main.h"
 #include "lists.h"
 
 /**
- * _alias - Implements the "alias" shell command.
- * @params: Pointer to a param_t struct with the shell state and arguments.
+ * print_all_aliases - Prints all existing aliases.
+ * @params: Pointer to a param_t struct with the shell state.
  *
- * This function defines new aliases or prints existing aliases in the shell.
- * If called with no arguments, it prints all existing aliases.
- * If called with arguments, it assumes each argument is an alias name or definition,
- * and performs the appropriate action.
+ * This function prints all the existing aliases in the shell.
+ * It traverses the alias list and prints each alias name and its value.
  */
+void print_all_aliases(param_t *params)
+{
+    list_t *h = params->alias_head;
+
+    while (h)
+    {
+        _printf("%s='%s'\n", h->str, h->val);
+        h = h->next;
+    }
+}
+
+/**
+ * free_alias_list - Frees the alias list.
+ * @head: Pointer to the head of the alias list.
+ *
+ * This function frees the memory allocated for the alias list.
+ * It iterates through the list and frees each node.
+ */
+void free_alias_list(list_t *head)
+{
+    list_t *current, *next;
+
+    current = head;
+    while (current)
+    {
+        next = current->next;
+        free(current->str);
+        free(current->val);
+        free(current);
+        current = next;
+    }
+}
+
 void _alias(param_t *params)
 {
     unsigned int i;
@@ -32,16 +62,6 @@ void _alias(param_t *params)
     }
 }
 
-/**
- * set_alias - Creates a new alias or updates an existing one.
- * @name: The name of the alias to set.
- * @params: Shell state.
- *
- * This function sets a new alias or updates an existing one in the shell.
- * An alias is a command or group of commands that can be referred to by a name.
- * For example, "ll" can be an alias for "ls -l". The alias is
- * stored as a key-value pair in the shell's list of aliases.
- */
 void set_alias(char *name, param_t *params)
 {
     char *val, *tmp = NULL;
@@ -86,17 +106,6 @@ void set_alias(char *name, param_t *params)
     make_alias(name, val, params);
 }
 
-/**
- * make_alias - Creates a new alias and adds it to the alias list.
- * @name: Name of the alias.
- * @val: Value of the alias.
- * @params: Parameter struct containing the alias list.
- *
- * This function creates a new alias using the given name and value,
- * and adds it to the alias list stored in the parameter struct.
- * If the alias list is empty, the new alias becomes the first node in the list.
- * Otherwise, the new alias is appended to the end of the existing list.
- */
 void make_alias(char *name, char *val, param_t *params)
 {
     list_t *h = params->alias_head;
