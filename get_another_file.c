@@ -1,117 +1,104 @@
-#include "kkshell.h"
 #include "main.h"
 #include <stdlib.h>
 
 /**
- * reverse_string - Reverses the order of characters in a string.
- * @str: A pointer to a null-terminated string to be reversed.
+ * rev_string - Reverses the order of characters in a string.
+ * @s: A pointer to a null-terminated string to be reversed.
  */
-void reverse_string(char *str)
+void rev_string(char *s)
 {
 	int head, tail;
-	int length;
+	int len;
 	char tmp;
 
-	if (str == NULL)
+	if (s == NULL)
 	{
-		str = "(null)";
+		s = "(null)";
 	}
-
-	/* Calculate the length of the string */
-	for (length = 0; str[length] != '\0'; length++)
+	for (len = 0; s[len] != '\0'; len++)
 		;
-
 	head = 0;
-	tail = length - 1;
-
-	/* Swap characters to reverse the string */
+	tail = len - 1;
 	while (head < tail)
 	{
-		tmp = *(str + head);
-		*(str + head) = *(str + tail);
-		*(str + tail) = tmp;
+		tmp = *(s + head);
+		*(s + head) = *(s + tail);
+		*(s + tail) = tmp;
 		head++;
 		tail--;
 	}
 }
 
 /**
- * get_reversed_string - Returns a reversed copy of a string.
- * @str: String to be reversed.
- * Return: Reversed string.
+ * get_rev - returns a reversed copy of a string
+ * @s: string to be reversed
+ * Return: string reversed
  */
-char *get_reversed_string(char *str)
+char *get_rev(char *s)
 {
 	char *ptr = NULL;
 
-	/* Get a copy of the input string */
-	ptr = get_string(str);
+	ptr = get_string(s);
 	if (!ptr)
 	{
 		return (NULL);
 	}
-	/* Reverse the string */
-	if (str)
+	if (s)
 	{
-		reverse_string(ptr);
+		rev_string(ptr);
 	}
 	return (ptr);
 }
 
 /**
- * rot13_encryption - Performs ROT13 encryption on a string.
- * @str: String to be encrypted.
+ * rot13 - performs rot13 encryption on a string
+ * @s: string to be encrypted
  *
- * Return: Pointer to the encrypted string.
+ * Return: pointer to the encrypted string
  */
-char *rot13_encryption(char *str)
+char *rot13(char *s)
 {
 	char *ptr;
 	int i;
-	char lowercase[] = "abcdefghijklmnopqrstuvwxyz";
-	char uppercase[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char rot13_lowercase[] = "nopqrstuvwxyzabcdefghijklm";
-	char rot13_uppercase[] = "NOPQRSTUVWXYZABCDEFGHIJKLM";
-
-	/* Loop through the string and perform ROT13 encryption */
-	for (ptr = str; *ptr != '\0'; ptr++)
+	char c[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+			'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+			'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+			'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	char r[] = {'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+			'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+			'j', 'k', 'l', 'm', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+			'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E',
+			'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
+	for (ptr = s; *ptr != '\0'; ptr++)
 	{
-		for (i = 0; i < 26; i++)
+		for (i = 0; i < 52; i++)
 		{
-			if (*ptr == lowercase[i])
+			if (*ptr == c[i])
 			{
-				*ptr = rot13_lowercase[i];
-				break;
-			}
-			else if (*ptr == uppercase[i])
-			{
-				*ptr = rot13_uppercase[i];
+				*ptr = r[i];
 				break;
 			}
 		}
 	}
-	return (str);
+	return (s);
 }
 
 /**
- * get_rot13_encryption - Get ROT13 encryption.
- * @str: String to be encrypted.
- * Return: Pointer to the encrypted string.
+ * get_rot13 - get rot13
+ * @s: string
+ * Return: ptr to string
  */
-char *get_rot13_encryption(char *str)
+char *get_rot13(char *s)
 {
 	char *ptr = NULL;
 
-	/* Get a copy of the input string */
-	ptr = get_string(str);
+	ptr = get_string(s);
 	if (!ptr)
 		return (NULL);
-
-	/* Perform ROT13 encryption on the string */
-	if (str)
+	if (s)
 	{
-		rot13_encryption(ptr);
+		rot13(ptr);
 	}
 	return (ptr);
 }
-
