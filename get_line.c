@@ -1,18 +1,17 @@
 #include <unistd.h>
 #include <stdlib.h>
-#include "kkshell.h"
+#include "shell.h"
 #include "main.h"
-
 #define BUFFER_SIZE 4096
 #define READ_SIZE 1024
 
 /**
- * rlLine - Reallocate the line buffer with a new size.
- * @line: Pointer to the line buffer.
- * @oldSize: Current size of the line buffer.
- * @newSize: New size to reallocate.
+ * rlLine - realloc the line buffer
+ * @line: to be buffered
+ * @oldSize: something borrowed
+ * @newSize: something blue
  *
- * Return: Pointer to the reallocated buffer or NULL on failure.
+ * Return: new allocated buffer
  */
 char *rlLine(char **line, unsigned int oldSize, unsigned int newSize)
 {
@@ -29,17 +28,16 @@ char *rlLine(char **line, unsigned int oldSize, unsigned int newSize)
 	}
 	return (newLine);
 }
-
 /**
- * _getline - Reads a line of characters from stdin.
- * @params: Pointer to the parameter structure.
+ * _getline - fetches a line of chars from stdin
+ * @params: parameters
  *
- * Return: Number of characters read, -1 on EOF or error.
+ * Return: number of char read
  */
 int _getline(param_t *params)
 {
 	char *line = NULL;
-	static unsigned int bufferSize = BUFFER_SIZE;
+	static unsigned int bufSize = BUFFER_SIZE;
 	char *writeHead = line;
 	unsigned int len;
 
@@ -51,15 +49,14 @@ int _getline(param_t *params)
 		writeHead += len;
 		if (writeHead >= (line + BUFFER_SIZE - 1 - READ_SIZE))
 		{
-			line = rlLine(&line, bufferSize, bufferSize * 2);
-			bufferSize *= 2;
+			line = rlLine(&line, bufSize, bufSize * 2);
+			bufSize *= 2;
 		}
 	} while (*(writeHead - 1) != '\n');
 
-	free(params->input_line);
-	params->input_line = line;
+	free(params->buffer);
+	params->buffer = line;
 	if (len == 0)
 		return (-1);
-	return (_strlen(params->input_line));
+	return (_strlen(params->buffer));
 }
-
