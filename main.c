@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include "shell.h"
+#include "kkshell.h"
 #include "main.h"
 
 #define BUFFER_SIZE 4096
