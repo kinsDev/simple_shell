@@ -2,133 +2,113 @@
 #include <stdlib.h>
 
 /**
- * reverse_string - Reverses the order of characters in a string.
- * @str: A pointer to a null-terminated string to be reversed.
+ * rev_string - Reverses the order of characters in a string.
+ * @s: A pointer to a null-terminated string to be reversed.
  */
-void reverse_string(char *str)
+void rev_string(char *s)
 {
 	int head, tail;
-	int length;
+	int len;
 	char tmp;
 
-	/* Handle case when input string is NULL */
-	if (str == NULL)
+	if (s == NULL)
 	{
-		str = "(null)";
+		s = "(null)";
 	}
 
-	/* Calculate the length of the string */
-	for (length = 0; str[length] != '\0'; length++)
+	/* Find the length of the string */
+	for (len = 0; s[len] != '\0'; len++)
 		;
 
 	head = 0;
-	tail = length - 1;
+	tail = len - 1;
 
-	/* Swap characters from the beginning and end of the string */
+	/* Swap characters from head and tail until the middle of the string is reached */
 	while (head < tail)
 	{
-		tmp = *(str + head);
-		*(str + head) = *(str + tail);
-		*(str + tail) = tmp;
+		tmp = *(s + head);
+		*(s + head) = *(s + tail);
+		*(s + tail) = tmp;
 		head++;
 		tail--;
 	}
 }
 
 /**
- * get_reversed_copy - Returns a reversed copy of a string.
- * @s: String to be reversed.
- * Return: Pointer to the reversed string.
+ * get_rev - Returns a reversed copy of a string
+ * @s: String to be reversed
+ * Return: Reversed string or NULL if memory allocation fails
  */
-char *get_reversed_copy(char *s)
+char *get_rev(char *s)
 {
-	char *reversed_str = NULL;
+	char *ptr = NULL;
 
-	/* Get a copy of the input string */
-	reversed_str = get_string(s);
-
-	/* Check if allocation was successful */
-	if (!reversed_str)
+	/* Get a copy of the original string */
+	ptr = get_string(s);
+	if (!ptr)
 	{
 		return (NULL);
 	}
 
-	/* Reverse the copied string */
 	if (s)
 	{
-		reverse_string(reversed_str);
+		/* Reverse the copy */
+		rev_string(ptr);
 	}
 
-	return (reversed_str);
+	return (ptr);
 }
 
 /**
- * rot13_encryption - Performs ROT13 encryption on a string.
- * @s: String to be encrypted.
+ * rot13 - Performs rot13 encryption on a string
+ * @s: String to be encrypted
  *
- * Return: Pointer to the encrypted string.
+ * Return: Pointer to the encrypted string
  */
-char *rot13_encryption(char *s)
+char *rot13(char *s)
 {
-	char *encrypted_str;
+	char *ptr;
 	int i;
-	char characters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-				'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-				'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-				'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-	char rot13_chars[] = {'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-				'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-				'j', 'k', 'l', 'm', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-				'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E',
-				'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
+	char c[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char r[] = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 
-	/* Get a copy of the input string */
-	encrypted_str = get_string(s);
-
-	if (!encrypted_str)
+	/* Loop through the string */
+	for (ptr = s; *ptr != '\0'; ptr++)
 	{
-		return (NULL);
-	}
-
-	/* Perform ROT13 encryption on the copied string */
-	for (i = 0; encrypted_str[i] != '\0'; i++)
-	{
-		int index;
-		for (index = 0; index < 52; index++)
+		/* Check if the character is a letter and perform rot13 encryption */
+		for (i = 0; i < 52; i++)
 		{
-			if (encrypted_str[i] == characters[index])
+			if (*ptr == c[i])
 			{
-				encrypted_str[i] = rot13_chars[index];
+				*ptr = r[i];
 				break;
 			}
 		}
 	}
 
-	return (encrypted_str);
+	return (s);
 }
 
 /**
- * get_rot13_encrypted_copy - Get ROT13 encrypted copy.
- * @s: String.
- * Return: Pointer to the encrypted string.
+ * get_rot13 - Get rot13 encryption of a string
+ * @s: String to be encrypted
+ * Return: Pointer to the encrypted string or NULL if memory allocation fails
  */
-char *get_rot13_encrypted_copy(char *s)
+char *get_rot13(char *s)
 {
-	char *encrypted_str = NULL;
+	char *ptr = NULL;
 
-	/* Get a copy of the input string */
-	encrypted_str = get_string(s);
-
-	if (!encrypted_str)
+	/* Get a copy of the original string */
+	ptr = get_string(s);
+	if (!ptr)
 		return (NULL);
 
-	/* Perform ROT13 encryption on the copied string */
 	if (s)
 	{
-		rot13_encryption(encrypted_str);
+		/* Encrypt the copy using rot13 */
+		rot13(ptr);
 	}
 
-	return (encrypted_str);
+	return (ptr);
 }
 
