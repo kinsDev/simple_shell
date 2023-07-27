@@ -1,7 +1,8 @@
-#include <unistd.h>
 #include <stdlib.h>
 #include "kkshell.h"
 #include "main.h"
+#include <unistd.h>
+
 /**
  * _cd - change current working directory
  * @params: shell parameters
@@ -14,6 +15,7 @@ void _cd(param_t *params)
 	char **tmpArgs = NULL, **originArgs = NULL;
 	int i;
 
+	/* Check if no arguments are provided, then change to HOME directory */
 	if (params->tokCount == 1)
 	{
 		target = _getenv("HOME", params);
@@ -23,6 +25,7 @@ void _cd(param_t *params)
 			return;
 		}
 	}
+	/* Check for "-" option, change to OLDPWD and print current directory */
 	else if (params->args[1][0] == '-')
 	{
 		if (!_strcmp(params->args[1], "-"))
@@ -38,6 +41,7 @@ void _cd(param_t *params)
 			}
 			_printf("%s\n", target);
 		}
+		/* Invalid option provided */
 		else
 		{
 			params->status = 2;
@@ -47,15 +51,18 @@ void _cd(param_t *params)
 			return;
 		}
 	}
+	/* Change to the specified directory */
 	else
 	{
 		target = _strdup(params->args[1]);
 		if (!target)
 		{
-			write(STDERR_FILENO, "cd target malloc error\n", 18);
+			write(STDERR_FILENO, "cd target malloc error\n", 23);
 			exit(-1);
 		}
 	}
+
+	/* Change the current working directory */
 	i = chdir(target);
 	if (i)
 	{
@@ -67,18 +74,21 @@ void _cd(param_t *params)
 		return;
 	}
 	free(target);
+
+	/* Save the current PWD to OLDPWD */
 	tmpArgs = malloc(sizeof(char *) * 3);
 	if (!tmpArgs)
 		exit(-1);
 	originArgs = params->args;
 	params->args = tmpArgs;
 	params->tokCount = 3;
+
 	/* set OLDPWD to the current PWD */
 	tmpArgs[0] = _strdup("setenv");
 	tmpArgs[1] = _strdup("OLDPWD");
 	if (!tmpArgs[0] || !tmpArgs[1])
 	{
-		write(STDERR_FILENO, "cd old PWD malloc error\n", 18);
+		write(STDERR_FILENO, "cd old PWD malloc error\n", 23);
 		free_params(params);
 		exit(-1);
 	}
@@ -86,13 +96,14 @@ void _cd(param_t *params)
 	_setenv(params);
 	for (i = 0; i < 3; i++)
 		free(tmpArgs[i]);
-	/* set PWD to the target wd */
+
+	/* Set PWD to the target working directory */
 	tmpArgs[0] = _strdup("setenv");
 	tmpArgs[1] = _strdup("PWD");
 	tmpArgs[2] = _strdup(getcwd(cwd, 1024));
 	if (!tmpArgs[0] || !tmpArgs[1] || !tmpArgs[2])
 	{
-		write(STDERR_FILENO, "cd new PWD malloc error\n", 18);
+		write(STDERR_FILENO, "cd new PWD malloc error\n", 23);
 		free_params(params);
 		exit(-1);
 	}
@@ -100,6 +111,8 @@ void _cd(param_t *params)
 	for (i = 0; i < 3; i++)
 		free(tmpArgs[i]);
 	free(tmpArgs);
-	/* reset params */
+
+	/* Reset params */
 	params->args = originArgs;
 }
+
