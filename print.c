@@ -5,7 +5,7 @@
 
 #define BUFFER_SIZE 1024
 
-// Function prototypes
+/* Function prototypes */
 int flush_buffer(char *buffer, int *index);
 int print_arg(char *arg);
 void get_type(char *format, int *index);
