@@ -1,42 +1,29 @@
 #include "lists.h"
 #include "kkshell.h"
 #include <stdlib.h>
-
 /**
  * free_params - Frees the memory allocated for the param_t structure.
  * 
- * @params: Pointer to the param_t structure to free.
+ * @params: pointer to the param_t structure to free
  *
  * This function frees the dynamically allocated memory used by the param_t
  * structure, including its members: the array of arguments, the environment
- * list, the alias list, the input buffer, and the nextCommand string.
+ * list, and the input buffer.
  */
+
 void free_params(param_t *params)
 {
-    /* Free the input buffer */
-    if (params->buffer)
-        free(params->buffer);
+	unsigned int i;
 
-    /* Free the next command string */
-    if (params->nextCommand)
-        free(params->nextCommand);
+	if (params->buffer)
+		free(params->buffer);
+	if (params->nextCommand)
+		free(params->nextCommand);
+	free_list(params->env_head);
+	free_list(params->alias_head);
 
-    /* Free the environment list */
-    free_list(params->env_head);
-
-    /* Free the alias list */
-    free_list(params->alias_head);
-
-    /* Free each argument in the args array */
-    for (unsigned int i = 0; params->args[i]; i++)
-    {
-        free(params->args[i]);
-    }
-
-    /* Free the args array itself */
-    free(params->args);
-
-    /* Free the param_t structure itself */
-    free(params);
+	for (i = 0; params->args[i]; i++)
+		free(params->args[i]);
+	free(params->args);
+	free(params);
 }
-
