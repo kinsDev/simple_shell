@@ -2,16 +2,17 @@
 #include <stdlib.h>
 #include "kkshell.h"
 #include "main.h"
-#define BUFFER_SIZE 4096
-#define READ_SIZE 1024
+
+#define INITIAL_BUFFER_SIZE 4096
+#define READ_CHUNK_SIZE 1024
 
 /**
- * rlLine - realloc the line buffer
- * @line: to be buffered
- * @oldSize: something borrowed
- * @newSize: something blue
+ * rlLine - Reallocate the line buffer to accommodate a larger size.
+ * @line: Pointer to the buffer to be reallocated.
+ * @oldSize: The current size of the buffer.
+ * @newSize: The new desired size of the buffer.
  *
- * Return: new allocated buffer
+ * Return: A pointer to the new allocated buffer.
  */
 char *rlLine(char **line, unsigned int oldSize, unsigned int newSize)
 {
@@ -26,28 +27,35 @@ char *rlLine(char **line, unsigned int oldSize, unsigned int newSize)
 		free(*line);
 		*line = newLine;
 	}
-	return (newLine);
+	return newLine;
 }
+
 /**
- * _getline - fetches a line of chars from stdin
- * @params: parameters
+ * _getline - Reads a line of characters from stdin.
+ * @params: Pointer to the parameter struct containing the shell state.
  *
- * Return: number of char read
+ * This function reads a line of characters from the standard input (stdin).
+ * It dynamically allocates memory for the buffer and reallocates it as needed
+ * to accommodate the entire line. The buffer is stored in the params->buffer
+ * variable, which should be freed by the caller after use.
+ *
+ * Return: The number of characters read (excluding the '\0' terminator), or -1
+ *         if the end of the input is reached (EOF is encountered).
  */
 int _getline(param_t *params)
 {
 	char *line = NULL;
-	static unsigned int bufSize = BUFFER_SIZE;
+	static unsigned int bufSize = INITIAL_BUFFER_SIZE;
 	char *writeHead = line;
 	unsigned int len;
 
-	line = malloc(BUFFER_SIZE);
+	line = malloc(INITIAL_BUFFER_SIZE);
 	do {
-		len = read(0, writeHead, BUFFER_SIZE);
+		len = read(0, writeHead, READ_CHUNK_SIZE);
 		if (len == 0)
 			break;
 		writeHead += len;
-		if (writeHead >= (line + BUFFER_SIZE - 1 - READ_SIZE))
+		if (writeHead >= (line + bufSize - 1 - READ_CHUNK_SIZE))
 		{
 			line = rlLine(&line, bufSize, bufSize * 2);
 			bufSize *= 2;
@@ -57,6 +65,7 @@ int _getline(param_t *params)
 	free(params->buffer);
 	params->buffer = line;
 	if (len == 0)
-		return (-1);
-	return (_strlen(params->buffer));
+		return -1;
+	return _strlen(params->buffer);
 }
+
