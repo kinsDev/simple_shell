@@ -1,14 +1,14 @@
 #include <stdlib.h>
 
 /**
- * remove_leading_zeros - Removes leading 0's from a binary string.
+ * move_left - Removes leading 0's from a binary string.
  * @buffer: The buffer containing the binary string.
  * @buffer_size: The size of the buffer.
  * @num: The number of digits in the binary number.
  *
  * Return: Pointer to the buffer.
  */
-char *remove_leading_zeros(char *buffer, int buffer_size, int num)
+char *move_left(char *buffer, int buffer_size, int num)
 {
     int i;
     char *ptr;
@@ -16,16 +16,16 @@ char *remove_leading_zeros(char *buffer, int buffer_size, int num)
     for (i = 0, ptr = (buffer + buffer_size - num); i < num; i++, ptr++)
         *(buffer + i) = *ptr;
     *(buffer + num) = '\0';
-    return buffer;
+    return (buffer);
 }
 
 /**
- * convert_to_binary - Converts an unsigned integer to a binary string.
+ * get_binary - Converts an unsigned integer to a binary string.
  * @n: The integer to convert.
  *
  * Return: Pointer to the binary string.
  */
-char *convert_to_binary(unsigned int n)
+char *get_binary(unsigned int n)
 {
     char *binary_str = NULL;
     unsigned int i, num = 0, buffer_size = 0;
@@ -38,7 +38,7 @@ char *convert_to_binary(unsigned int n)
             binary_str[0] = '0';
             binary_str[1] = '\0';
         }
-        return binary_str;
+        return (binary_str);
     }
 
     buffer_size = sizeof(unsigned int) * 8 + 1;
@@ -60,38 +60,38 @@ char *convert_to_binary(unsigned int n)
             i--;
         }
         num++;
-        binary_str = remove_leading_zeros(binary_str, buffer_size, num);
+        binary_str = move_left(binary_str, buffer_size, num);
     }
-    return binary_str;
+    return (binary_str);
 }
 
 /**
- * copy_character - Returns a copied character.
+ * get_char - Returns a copied character.
  * @c: The character to be copied.
  *
  * Return: Pointer to the copied character.
  */
-char *copy_character(char c)
+char *get_char(char c)
 {
     char *ptr = NULL;
 
     ptr = malloc(2);
     if (ptr == NULL)
     {
-        return NULL;
+        return (NULL);
     }
     ptr[0] = c;
     ptr[1] = '\0';
-    return ptr;
+    return (ptr);
 }
 
 /**
- * duplicate_string - Returns a new duplicated string.
+ * get_string - Returns a new duplicated string.
  * @s: The string to be copied.
  *
  * Return: Null if the string is NULL, else a pointer to the copied string.
  */
-char *duplicate_string(char *s)
+char *get_string(char *s)
 {
     char *duplicated_str = NULL;
     int i, j;
@@ -100,7 +100,7 @@ char *duplicate_string(char *s)
     {
         duplicated_str = malloc(7);
         if (duplicated_str == NULL)
-            return NULL;
+            return (NULL);
         duplicated_str[0] = '(';
         duplicated_str[1] = 'n';
         duplicated_str[2] = 'u';
@@ -108,7 +108,7 @@ char *duplicate_string(char *s)
         duplicated_str[4] = 'l';
         duplicated_str[5] = ')';
         duplicated_str[6] = '\0';
-        return duplicated_str;
+        return (duplicated_str);
     }
 
     for (i = 0; s[i] != '\0'; i++)
@@ -119,7 +119,7 @@ char *duplicate_string(char *s)
     duplicated_str = (char *)malloc(i * sizeof(char) + 1);
     if (duplicated_str == NULL)
     {
-        return NULL;
+        return (NULL);
     }
 
     for (j = 0; j < i; j++)
@@ -127,19 +127,20 @@ char *duplicate_string(char *s)
         duplicated_str[j] = s[j];
     }
     duplicated_str[j] = '\0';
-    return duplicated_str;
+    return (duplicated_str);
 }
 
 /**
- * convert_to_string - Converts an integer to a string.
+ * get_number - Converts an integer to a string.
  * @n: The integer.
  *
  * Return: Pointer to the integer string, NULL on error.
  */
-char *convert_to_string(int n)
+char *get_number(int n)
 {
     int i, length = 0, tmp;
     char *buffer = NULL;
+
     /* Find the number of bytes to allocate */
     tmp = n;
     while (tmp >= 10 || tmp <= -10)
@@ -172,6 +173,6 @@ char *convert_to_string(int n)
         tmp = (n % 10) >= 0 ? n % 10 : -(n % 10);
         buffer[i] = tmp + '0';
     }
-    return buffer;
+    return (buffer);
 }
 
