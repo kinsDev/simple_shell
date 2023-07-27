@@ -5,42 +5,50 @@
 
 #define BUFFER_SIZE 1024
 
+// Function prototypes
 int flush_buffer(char *buffer, int *index);
-
 int print_arg(char *arg);
-
 void get_type(char *format, int *index);
+
 /**
- * _printf - output text to standard output specified by format
- * @format: directives for outputing text
+ * _printf - Output text to standard output specified by format.
+ * @format: Directives for outputting text.
  *
- * Return: number of characters output
+ * Return: Number of characters output.
  */
 int _printf(const char *format, ...)
 {
+	va_list params;
 	int high, sum = 0, index = 0;
 	char *arg = NULL;
 	char buffer[BUFFER_SIZE] = {0};
-	va_list params;
 
 	if (!format)
 		return (-1);
-	/* special case only one % sign */
+
+	va_start(params, format);
+
+	/* Special case for only one % sign */
 	if (_strlen((char *)format) == 1 && format[0] == '%')
 	{
+		va_end(params);
 		return (-1);
 	}
+
 	high = 0;
-	va_start(params, format);
 	while (1)
 	{
 		if (index == BUFFER_SIZE)
 		{
+			/* Flush the buffer when it is full */
 			sum += flush_buffer(buffer, &index);
 		}
+
 		if (format[high] == '%')
 		{
 			get_type((char *)format, &high);
+
+			/* Process the specifier */
 			switch (format[high])
 			{
 			case 'c':
@@ -73,18 +81,20 @@ int _printf(const char *format, ...)
 				buffer[index] = '%';
 				index++;
 				continue;
-			default:/* unknown specifier */
+			default: /* Unknown specifier */
 				arg = malloc(3);
 				arg[0] = '%';
 				arg[1] = format[high];
 				arg[2] = '\0';
 			}
+
 			if (!arg)
 			{
 				va_end(params);
 				free(arg);
 				return (-1);
 			}
+
 			sum += flush_buffer(buffer, &index);
 			sum += print_arg(arg);
 			free(arg);
@@ -99,18 +109,20 @@ int _printf(const char *format, ...)
 		else
 		{
 			sum += flush_buffer(buffer, &index);
-			va_end(params);
-			return (sum);
+			break;
 		}
 	}
+
+	va_end(params);
 	return (sum);
 }
+
 /**
- * flush_buffer - print out the buffer upto index and reset
- * @buffer: buffer string
- * @index: index
+ * flush_buffer - Print out the buffer up to index and reset.
+ * @buffer: Buffer string.
+ * @index: Index.
  *
- * Return: total number of characters printed
+ * Return: Total number of characters printed.
  */
 int flush_buffer(char *buffer, int *index)
 {
@@ -118,6 +130,8 @@ int flush_buffer(char *buffer, int *index)
 
 	num = write(1, buffer, *index);
 	*index = BUFFER_SIZE - 1;
+
+	/* Reset the buffer to 0 */
 	while (*index >= 0)
 	{
 		buffer[*index] = 0;
@@ -126,22 +140,24 @@ int flush_buffer(char *buffer, int *index)
 	*index = 0;
 	return (num);
 }
+
 /**
- * print_arg - print argument string
- * @arg: string
+ * print_arg - Print argument string.
+ * @arg: String.
  *
- * Return: number of bytes printed
+ * Return: Number of bytes printed.
  */
 int print_arg(char *arg)
 {
 	return (write(1, arg, _strlen(arg)));
 }
+
 /**
- * get_type - get type from the specifier from format string
- * This function skip spaces, find a specifier, and move index
- * to the specifier
- * @format: format string
- * @index: current index of format string
+ * get_type - Get type from the specifier from the format string.
+ * This function skips spaces, finds a specifier, and moves the index
+ * to the specifier.
+ * @format: Format string.
+ * @index: Current index of format string.
  */
 void get_type(char *format, int *index)
 {
@@ -149,3 +165,4 @@ void get_type(char *format, int *index)
 		*index += 1;
 	} while (format[*index] == ' ');
 }
+
