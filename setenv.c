@@ -1,46 +1,54 @@
+#include <stdlib.h>
+#include "kkshell.h"
+#include "main.h"
+#include "lists.h"
+
 /**
- * _setenv - Sets the value of an environment variable.
+ * _setenv - Sets or updates an environment variable.
  * @params: Pointer to a param_t struct with the shell state and arguments.
  *
- * This function searches the environment list to find the environment variable name
+ * This function searches the environment list to find the environment variable name,
  * and sets it to the corresponding value string. If the variable does not exist,
- * a new variable is added to the environment list with the specified name and value.
+ * a new variable with the provided name and value is added to the environment list.
  */
 void _setenv(param_t *params)
 {
-	char *env_name = NULL, *env_value = NULL;
-	char *name = params->args[1], *value = params->args[2];
-	list_t *env_node = params->env_head;
+    char *tmp = NULL;
+    char *name = params->args[1];
+    char *value = params->args[2];
+    list_t *h = params->env_head;
 
-	if (params->tokCount != 3)
-	{
-		params->status = 0;
-		return;
-	}
+    /* Check if the number of arguments is correct */
+    if (params->tokCount != 3)
+    {
+        params->status = 0; /* Reset the status to indicate no error */
+        return;
+    }
 
-	while (env_node)
-	{
-		if (_strcmp(name, env_node->str) == 0)
-		{
-			env_name = env_node->str;
-			env_value = env_node->val;
-			free(env_value);
-			env_node->val = _strdup(value);
-			if (!env_node->val)
-			{
-				write(STDERR_FILENO, "setenv malloc error\n", 18);
-				exit(-1);
-			}
-			env_node->valLen = _strlen(value);
-			params->status = 0;
-			return;
-		}
-		env_node = env_node->next;
-	}
+    /* Loop through the environment list to find the variable */
+    while (h)
+    {
+        if (_strcmp(name, h->str) == 0) /* Environment variable exists */
+        {
+            tmp = h->val;
+            free(tmp); /* Free the old value */
+            h->val = _strdup(value); /* Update the value */
+            if (!h->val)
+            {
+                /* Handle memory allocation error */
+                write(STDERR_FILENO, "setenv malloc error\n", 18);
+                exit(-1);
+            }
+            h->valLen = _strlen(value);
+            params->status = 0; /* Reset the status to indicate success */
+            return;
+        }
+        h = h->next;
+    }
 
-	/* If the environment variable does not exist, add it to the environment list. */
-	params->env_head = add_node(&(params->env_head), name, value);
-	params->status = 0;
+    /* Environment variable does not exist, add a new variable */
+    params->env_head = add_node(&(params->env_head), name, value);
+    params->status = 0; /* Reset the status to indicate success */
 }
 
 /**
@@ -48,39 +56,41 @@ void _setenv(param_t *params)
  * @params: Pointer to a param_t struct with the shell state and arguments.
  *
  * This function searches the environment list to find the environment variable name
- * and removes it if it exists.
+ * and removes it from the list. If the variable is not found, nothing is done.
  */
 void _unsetenv(param_t *params)
 {
-	char *name = params->args[1];
-	list_t *prev_node = NULL, *env_node = params->env_head;
+    char *name = params->args[1];
+    list_t *prev = NULL;
+    list_t *h = params->env_head;
 
-	if (params->tokCount != 2)
-	{
-		params->status = 0;
-		return;
-	}
+    /* Check if the number of arguments is correct */
+    if (params->tokCount != 2)
+    {
+        params->status = 0; /* Reset the status to indicate no error */
+        return;
+    }
 
-	while (env_node)
-	{
-		if (_strcmp(name, env_node->str) == 0)
-		{
-			if (env_node == params->env_head)
-				params->env_head = env_node->next;
-			else
-				prev_node->next = env_node->next;
+    /* Loop through the environment list to find the variable */
+    while (h)
+    {
+        if (_strcmp(name, h->str) == 0) /* Environment variable exists */
+        {
+            /* Remove the node from the list and free its memory */
+            if (h == params->env_head)
+                params->env_head = h->next;
+            else
+                prev->next = h->next;
+            free(h->str);
+            free(h->val);
+            free(h);
+            params->status = 0; /* Reset the status to indicate success */
+            return;
+        }
+        prev = h;
+        h = h->next;
+    }
 
-			free(env_node->str);
-			free(env_node->val);
-			free(env_node);
-			params->status = 0;
-			return;
-		}
-
-		prev_node = env_node;
-		env_node = env_node->next;
-	}
-
-	params->status = 0;
+    params->status = 0; /* Reset the status to indicate success */
 }
 
